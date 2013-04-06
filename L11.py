@@ -5,6 +5,7 @@
 #Text Games II
 #
 def getName():
+    """Jake Chapman"""
     name = requestString("What is the name of your player?")
  
     return name
@@ -12,7 +13,7 @@ def getName():
  
  
 def getWeapon():
- 
+    """Jake Chapman"""
     weapon = requestString("What is your weapon of choice?(Sword, Axe, Bow)")
  
     if weapon == 'Sword' or weapon == 'sword':
@@ -35,7 +36,7 @@ class Player:
   """Constructor for the generic player class"""
  
   def __init__(self,name,pos,invt, wpn, health):
- 
+    """Jake Chapman"""
     self.name = name
  
     self.position = pos
@@ -53,6 +54,7 @@ class Player:
     Adds an item to the player's inventory
     @param string the name of the item
     @return void
+    James Holdren
     """
     self.inventory.append(key)
   
@@ -60,6 +62,7 @@ class Player:
     """
     Retrieves the player's health
     @return int the player's health
+    James Holdren
     """
     
     return self.health
@@ -67,7 +70,7 @@ class Player:
   #Function to determine whether or not a battle will occur
  
   def battle(self):
- 
+    """Jake Chapman"""
     import random
  
     #Variable that holds value that determines if a battle will occur
@@ -146,6 +149,7 @@ class Player:
  
   def rePos(self, direction):
     """Updates the players location"""
+    """James Holdren"""
  
     if (direction == 'n'):
       self.position[1] += 1
@@ -157,19 +161,29 @@ class Player:
       self.position[1] -= 1
     elif (direction == 'warp'):
       self.level = not self.level
- 
+  
+  def checkEnding(self):
+    """
+    Checks if the user has won
+    @return boolean
+    Sug Yon
+    """
+    
+    if (len(self.inventory) == 4):
+      return true
+    return false
  
  
 class Dwarf:
  
   def __init__(self, health):
- 
+    """Jake Chapman"""
     self.health = health
  
        
  
   def updateHealth(self,damage):
- 
+      """Jake Chapman"""
       self.health = self.health - damage
  
       if self.health <= 0:
@@ -183,15 +197,14 @@ class Dwarf:
  
  
 class Elf:
- 
     def __init__(self,health):
- 
+      """Jake Chapman"""
       self.health = health
  
    
  
     def updateHealth(self, damage):
- 
+      """Jake Chapman"""
       self.health = self.health - damage
  
       if self.health <= 0:
@@ -219,6 +232,7 @@ class Location:
     Constructor for Location base class
     @param list of items contained here
     @param the description
+    James Holdren
     """
  
    
@@ -229,6 +243,7 @@ class Location:
   def getName(self):
     """
     @return the name of the current object
+    James Holdren
     """
     return self.__class__.__name__
   
@@ -237,6 +252,7 @@ class Location:
     Checks to see if the location has the item
     @param the item name
     @return true if it does else false
+    James Holdren
     """
     
     if (item in self.items):
@@ -249,6 +265,7 @@ class Location:
     Removes the item from the location
     @param string the item
     @return void
+    James Holdren
     """
     self.items.remove(item)
  
@@ -260,11 +277,13 @@ class Forest(Location):
  
   def __init__(self):
     """Makes a dummy location object as a forest"""
+    """James Holdren"""
     description = "You see a forest, nothing more"
     Location.__init__(self, [], description)
   
   def info(self):
     """Prints the forest description"""
+    """James Holdren"""
     printNow(self.description)
  
  
@@ -277,6 +296,7 @@ class Landmark(Location):
     Makes a landmark
     @param list of items contained here
     @param The description
+    James Holdren
     """
     
     Location.__init__(self, items, description)
@@ -285,6 +305,7 @@ class Landmark(Location):
  
   def info(self):
     """Displays info for the location"""
+    """James Holdren"""
     printNow(self.description)
     
     # for displaying items
@@ -304,18 +325,24 @@ class WarpZone(Location):
   """Location that allows a player to warp to a different zone"""
  
   def __init__(self):
+    """James Holdren"""
     description = "You see the warp zone, a gateway to another realm"
     Location.__init__(self, [], description)
   
   def info(self):
     """
     Prints the warp zone description
+    James Holdren
     """
     printNow(self.description)
 
 class Game:
   
   def __init__(self):
+    """
+    James Holdren
+    Sug Yon
+    """
     import random
     
     # The locations
@@ -343,7 +370,11 @@ class Game:
  
  
   def generateMap(self):   
-    """Generates the map"""
+    """
+    Generates the map
+    James Holdren
+    Sug Yon
+    """
     
     import random
     # Initialize the landmarks
@@ -360,9 +391,12 @@ class Game:
       
     
     tower = Landmark(['staff'], 'You see a crumbling tower.')
-    well = Landmark(['gold piece'], 'You see an old well')
+    well = Landmark(['gold piece'], 'You see an old well.')
+    grave = Landmark(['medallion'], 'Before you is a creepy grave.')
+    stone = Landmark(['piece of eight'], 'You see a large stone, towering '
+    + 'the trees')
     
-    landmarks = [tower, well]
+    landmarks = [tower, well, grave, stone]
     # Now attempt to place the landmarks
  
     for landmark in landmarks:
@@ -393,8 +427,14 @@ class Game:
             self.locs[z][y][x] = Forest()
     
   def gameLoop(self, locs):
-    """The game loop of the game"""
-    """@param the locations"""
+    """
+    The game loop of the game
+    @param the locations
+    @return void
+    James Holdren
+    Sug Yon
+    Jake Chapman
+    """
     
     clearScreen()
    
@@ -404,7 +444,10 @@ class Game:
     
     player = Player(getName(), startPos, [], getWeapon(), 50)
     
-    while ((textIn != "exit") and (player.getHealth() > 0)):
+    # keep track if the player has won or not
+    hasWon = false
+    
+    while ((textIn != "exit") and (player.getHealth() > 0) and (not hasWon)):
       # get the current location
       currentLoc = locs[player.level][player.position[1]][player.position[0]]
       # get the location's name
@@ -415,7 +458,7 @@ class Game:
       turnIsDone = false
       
       # check if the player is in a battle and then carry out the battle
-      # player.battle()
+      player.battle()
         
       
       # generate all movements for the player
@@ -425,7 +468,7 @@ class Game:
       currentLoc.info()
       
       # begin the player's turn
-      while ((textIn != 'exit') and (not turnIsDone)):
+      while ((textIn != 'exit') and (not turnIsDone) and (not hasWon)):
         # tell the user the possible movements
         self.outputPossibleMovements(possibles)
         
@@ -445,8 +488,26 @@ class Game:
           printNow("You picked up: " + textIn)
         elif (textIn == 'exit'):
           pass
+        elif (textIn == 'help'):
+          help()
+        elif (textIn == 'info'):
+          currentLoc.info()
         else:
           printNow("Invalid Input")
+        
+        # check to see if the player has won the game
+        hasWon = player.checkEnding()
+    
+    # player has either exited, won, or died. Check to see which
+    if (player.getHealth() <= 0):
+      # the player has died
+      printNow("You are overcome by the creatures of the forest. GAME OVER")
+    elif (player.checkEnding()):
+      # the player has collected all items
+      printNow("Congradulations! You have collected all items!")
+    else:
+      # the player has entered exit. Quit without messages
+      pass
 
   def generatePossibleActions(self, pos, type):
     """
@@ -489,10 +550,36 @@ def clearScreen():
   """
   Clears the console
   @return void
+  James Holdren
   """
   
   printNow("\n"*15)
 
+def help():
+  """
+  Displays the help for the screen
+  Sug Yon
+  James Holdren
+  """
+  printNow("Help ---------")
+  printNow("There are four landmarks in the forest, each with an item for "
+  + "collection. Retreive them all and you win.")
+  printNow("Monsters -----")
+  printNow("As you move between locations in the forest, you may be attacked "
+  + "by monsters.")
+  printNow("Movement -----")
+  printNow("You will be prompted for a direction at each location; however, "
+  + "you may not be able to move in some direction based on your position.")
+  printNow("Items --------")
+  printNow("If you are at a location that contains an item, you may pick "
+  + "it up by entering it's name.")
+  printNow("Info ---------")
+  printNow("Entering in 'info' at any time will display info about your "
+  + "current location.")
+
 def runGame():
-  """Runs the game"""
+  """
+  Runs the game
+  Jake Chapman
+  """
   game = Game()
