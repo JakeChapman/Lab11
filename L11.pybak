@@ -306,6 +306,12 @@ class WarpZone(Location):
   def __init__(self):
     description = "You see the warp zone, a gateway to another realm"
     Location.__init__(self, [], description)
+  
+  def info(self):
+    """
+    Prints the warp zone description
+    """
+    printNow(self.description)
 
 class Game:
   
@@ -341,6 +347,17 @@ class Game:
     
     import random
     # Initialize the landmarks
+    
+    # put down two warp zones
+    for i in range(2):
+      # get the location
+      x = random.randint(0,4)
+      y = random.randint(0,4)
+      z = i
+      
+      # place a warp zone
+      self.locs[z][y][x] = WarpZone()
+      
     
     tower = Landmark(['staff'], 'You see a crumbling tower.')
     well = Landmark(['gold piece'], 'You see an old well')
@@ -398,7 +415,7 @@ class Game:
       turnIsDone = false
       
       # check if the player is in a battle and then carry out the battle
-      player.battle()
+      # player.battle()
         
       
       # generate all movements for the player
@@ -451,7 +468,7 @@ class Game:
       actions.append("s")
     # check if we're in a warp zone
     if (type == 'WarpZone'):
-      actions.append('Warp')
+      actions.append('warp')
     
     return actions
   
