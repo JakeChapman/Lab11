@@ -5,7 +5,6 @@
 #Text Games II
 #
 def getName():
- 
     name = requestString("What is the name of your player?")
  
     return name
@@ -56,6 +55,14 @@ class Player:
     @return void
     """
     self.inventory.append(key)
+  
+  def getHealth(self):
+    """
+    Retrieves the player's health
+    @return int the player's health
+    """
+    
+    return self.health
  
   #Function to determine whether or not a battle will occur
  
@@ -138,7 +145,6 @@ class Player:
   # function for moving
  
   def rePos(self, direction):
- 
     """Updates the players location"""
  
     if (direction == 'n'):
@@ -330,11 +336,6 @@ class Game:
     self.gameLoop(self.locs)
  
  
- 
- 
- 
- 
- 
   def generateMap(self):   
     """Generates the map"""
     
@@ -377,6 +378,8 @@ class Game:
   def gameLoop(self, locs):
     """The game loop of the game"""
     """@param the locations"""
+    
+    clearScreen()
    
     textIn = ""
    
@@ -384,43 +387,47 @@ class Game:
     
     player = Player(getName(), startPos, [], getWeapon(), 50)
     
-    while ((textIn != "exit") and (player.health > 0)):
+    while ((textIn != "exit") and (player.getHealth() > 0)):
       # get the current location
       currentLoc = locs[player.level][player.position[1]][player.position[0]]
       # get the location's name
       locName = currentLoc.getName()
       
-      # check if the player is in a battle and then carry out the battle
-      player.battle()
       
       #keep track if the user is done with the turn
       turnIsDone = false
       
-      # print the description
-      currentLoc.info()
+      # check if the player is in a battle and then carry out the battle
+      player.battle()
+        
       
       # generate all movements for the player
       possibles = self.generatePossibleActions(player.position, locName)
       
+      # print the description
+      currentLoc.info()
+      
       # begin the player's turn
       while ((textIn != 'exit') and (not turnIsDone)):
-        # REMOVE
-        printNow(player.position)
-        
         # tell the user the possible movements
-        # self.outputPossibleMovements(possibles)
+        self.outputPossibleMovements(possibles)
         
-        textIn = requestString(">> What will you do? >>").lower()
+        textIn = requestString("What will you do?").lower()
         
         # check the user input
         # check if it's a valid direction
         if (textIn in possibles):
           player.rePos(textIn)
           turnIsDone = true
+          clearScreen()
         # check if they entered a valid item name
         elif (currentLoc.checkForItem(textIn)):
           player.addItem(textIn)
           currentLoc.removeItem(textIn)
+          
+          printNow("You picked up: " + textIn)
+        elif (textIn == 'exit'):
+          pass
         else:
           printNow("Invalid Input")
 
@@ -448,15 +455,26 @@ class Game:
     
     return actions
   
-  def outputPossibleMovements(movements):
+  def outputPossibleMovements(self, movements):
     """
     Prints to the screen a formatted list of movements
     @param the list of possible movements
     """
     
     # store the prompt so we can use one line
+    prompt = "You may move: "
+    for movement in movements:
+      prompt += movement + " "
     
-    
+    printNow(prompt)
+
+def clearScreen():
+  """
+  Clears the console
+  @return void
+  """
+  
+  printNow("\n"*15)
 
 def runGame():
   """Runs the game"""
