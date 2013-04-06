@@ -437,7 +437,13 @@ class Game:
     """
     
     clearScreen()
-   
+    
+    # put up the prologue
+    prologue()
+    textIn = raw_input("Press enter to continue")
+    
+    clearScreen()
+    
     textIn = ""
    
     startPos = [0,0]
@@ -576,6 +582,15 @@ def help():
   printNow("Info ---------")
   printNow("Entering in 'info' at any time will display info about your "
   + "current location.")
+
+def prologue():
+  """
+  Prints the prologue to the screen
+  James Holdren
+  """
+  printNow("You are lost in a forest, and the only ways out are to either "
+  + "collect each item at randomly placed landmarks around the forest or "
+  + "succumb to death by creatures calling the forest home.")
 
 def runGame():
   """
