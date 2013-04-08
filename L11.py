@@ -90,60 +90,92 @@ class Player:
     #if loops that contain a while loop that does the battle
  
     if chance > 50 and chance < 75:
- 
+      
+      showInformation("A dwarf has appeared and is attacking!")
+      
       while not(dwarf_health == 'Dead'):
  
         if self.weapon == 'Bow':
- 
+          
+          printNow("You fire an arrow at him")
+          
           dwarf_health  = dwarf.updateHealth(8)
+          
+          showInformation("The dwarf's health is " + str(dwarf.health))
  
         elif self.weapon == 'Axe':
  
+          
+          printNow("You strike the elf with your axe")
+          
           dwarf_health = dwarf.updateHealth(3)
+          
+          showInformation("The dwarf's health is " + str(dwarf.health))
  
         elif self.weapon == 'Sword':
  
+          
+          printNow("You slash at the creature")
+          
           dwarf_health = dwarf.updateHealth(5)
+          
+          showInformation("The dwarf's health is " + str(dwarf.health))
+          
  
         self.health = self.health - 2
  
         if self.health <= 0:
  
-          printNow('DEAD!!!')
+          showInformation('DEAD!!!')
  
           break         
  
         else:
  
-          printNow('Your current health is ' + str(self.health))
+          showInformation('Your current health is ' + str(self.health))
  
     elif chance > 75:
- 
+      
+      showInformation("An elf has appeared and is attacking!")
+      
       while elf_health != 'Dead':
- 
+       
         if self.weapon == 'Bow':
- 
+          
+          printNow("You fire an arrow at him")
+          
           elf_health = elf.updateHealth(8)
+          
+          showInformation("The elf's health is  " + str(elf.health))
  
         elif self.weapon == 'Axe':
- 
+          
+          printNow("You strike the elf with your axe")
+          
           elf_health = elf.updateHealth(3)
+          
+          showInformation("The elf's health is " + str(elf.health))
  
         elif self.weapon == 'Sword':
  
+          
+          printNow("You slash at the creature")
+          
           elf_health = elf.updateHealth(5)
+          
+          showInformation("The elf's health is " + str(elf.health))
  
         self.health = self.health - 2
  
         if self.health <= 0:
  
-          printNow('DEAD!!!')
+          showInformation('DEAD!!!')
  
           break
  
         else:
  
-          printNow('Your current health is ' + str(self.health))
+          showInformation('Your current health is ' + str(self.health))
  
   # function for moving
  
@@ -448,7 +480,7 @@ class Game:
    
     startPos = [0,0]
     
-    player = Player(getName(), startPos, [], getWeapon(), 50)
+    player = Player(getName(), startPos, [], getWeapon(), 100)
     
     # keep track if the player has won or not
     hasWon = false
